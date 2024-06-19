@@ -1,0 +1,121 @@
+{% extends 'seller-header.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+   <head>
+     
+   </head>
+   <body class="sub_page">
+<!--<div class="hero_area">
+
+      </div> -->
+      <!-- inner page section -->
+      <section class="inner_page_head">
+         <div class="container_fuild">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="full">
+                     <h3>Edit Product</h3>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- end inner page section -->
+      <!-- why section -->
+      <section class="why_section layout_padding">
+         <div class="container">
+         
+            <div class="row">
+               <div class="col-lg-8 offset-lg-2">
+                  <div class="full">
+                     {% if msg %}
+                     <b style="color: darkblue;">{{msg}}</b>
+                     {% endif %}
+                     <form action="{% url 'seller-product-edit' pk=product.pk %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <fieldset>                           
+                           <select name="product_category" style="font-size: 18px;border-radius: 12px;font-weight: 600; ">
+                           {% if product.product_category == "Men" %}
+                              <option>---Select Product Category---</option>
+                              <option value="Men" selected>Men</option>
+                              <option value="Women">Women</option>
+                              <option value="Kids">Kids</option>
+                           {% elif product.product_category == "Women" %}
+                              <option>---Select Product Category---</option>
+                              <option value="Men">Men</option>
+                              <option value="Women" selected>Women</option>
+                              <option value="Kids">Kids</option>
+                           {% elif product.product_category == "Kids" %}
+                              <option>---Select Product Category---</option>
+                              <option value="Men">Men</option>
+                              <option value="Women">Women</option>
+                              <option value="Kids" selected>Kids</option>
+                           {% endif %}
+                           </select>
+
+                           <select name="product_sub_category" style="font-size: 18px;border-radius: 12px;font-weight: 600; ">
+                           {% if product.product_sub_category == "Jeans" %}
+                              <option>---Select Product Sub Category---</option>
+                              <option value="Jeans" selected>Jeans</option>
+                              <option value="T-Shirt">T-Shirt</option>
+                              <option value="Shirts">Shirts</option>
+                           {% elif product.product_sub_category == "T-Shirt" %}
+                              <option>---Select Product Sub Category---</option>
+                              <option value="Jeans">Jeans</option>
+                              <option value="T-Shirt" selected>T-Shirt</option>
+                              <option value="Shirts">Shirts</option>
+                           {% elif product.product_sub_category == "Shirts" %}
+                              <option>---Select Product Sub Category---</option>
+                              <option value="Jeans">Jeans</option>
+                              <option value="T-Shirt">T-Shirt</option>
+                              <option value="Shirts" selected>Shirts</option>
+                           {% endif %}       
+                           </select>
+
+                           <input type="text" value="{{product.product_name}}" name="product_name" required style="font-size: 18px;border-radius: 12px; "/>
+                           <input type="text" value="{{product.product_price}}" name="product_price" required style="font-size: 18px;border-radius: 12px; "/>
+                           <textarea placeholder="Enter Product Descriptions" name="product_desc"style="font-size: 18px;border-radius: 12px; " required>{{product.product_desc}}</textarea>
+                           <img src="{{product.product_image.url}}" style="width: 120px;height: 120px;border-radius: 10px;margin-bottom: 15px;object-fit: cover; ">
+                           <input type="file" name="product_image"style="font-size: 18px;border-radius: 12px; " />
+                           <input type="submit" value="Update Product"style="font-size: 18px;border-radius: 12px; " />
+                        </fieldset>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- end why section -->
+      <!-- arrival section -->
+      <section class="arrival_section">
+         <div class="container">
+            <div class="box">
+               <div class="arrival_bg_box">
+                  <img src="{% static 'images/arrival-bg.png' %}" alt="">
+               </div>
+               <div class="row">
+                  <div class="col-md-6 ml-auto">
+                     <div class="heading_container remove_line_bt">
+                        <h2>
+                           #NewArrivals
+                        </h2>
+                     </div>
+                     <p style="margin-top: 20px;margin-bottom: 30px;">
+                        Vitae fugiat laboriosam officia perferendis provident aliquid voluptatibus dolorem, fugit ullam sit earum id eaque nisi hic? Tenetur commodi, nisi rem vel, ea eaque ab ipsa, autem similique ex unde!
+                     </p>
+                     <a href="" style="font-size: 18px;border-radius: 15px;">
+                     Shop Now
+                     </a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- end arrival section -->
+   </body>
+</html>
+
+{% endblock %}

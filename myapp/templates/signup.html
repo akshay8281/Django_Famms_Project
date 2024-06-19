@@ -1,0 +1,115 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+   <head>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   </head>
+   <body class="sub_page">
+
+      <!-- inner page section -->
+      <section class="inner_page_head">
+         <div class="container_fuild">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="full">
+                     <h3>Sign Up</h3>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- end inner page section -->
+      <!-- why section -->
+      <section class="why_section layout_padding">
+         <div class="container">
+         
+            <div class="row">
+               <div class="col-lg-8 offset-lg-2">
+                  <div class="full">
+                     {% if msg %}
+                     <b style="color: darkblue;">{{msg}}</b>
+                     {% endif %}
+                     <form action="{% url 'signup' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <fieldset>
+                           <select name="usertype" style="font-weight: 600; font-size: 18px;border-radius: 12px; ">
+                              <option>---Select User Type---</option>
+                              <option value="Buyer">Buyer</option>
+                              <option value="Seller">Seller</option>
+                           </select>
+                           <input type="text" placeholder="Enter Your First Name" name="fname" style="font-size: 18px;border-radius: 12px; " required />
+                           <input type="text" placeholder="Enter Your Last Name" name="lname" style="font-size: 18px;border-radius: 12px; " required />
+                           <input type="email" id="email" placeholder="Enter Your Email Address" name="email" style="font-size: 18px;border-radius: 12px; " required />
+                           <span id="email_error" style="color: darkred;font-weight: 700; "></span>
+                           <input type="text" placeholder="Enter mobile" name="mobile" style="font-size: 18px;border-radius: 12px; " required />
+                           <textarea placeholder="Enter Your Address" name="address" style="font-size: 18px;border-radius: 12px; " required></textarea>
+
+                           <input type="file" style="font-size: 18px;border-radius: 12px; " name="profile_picture"/>
+
+                           <input type="password" placeholder="Enter Password" name="password" style="font-size: 18px;border-radius: 12px; " required />
+                           <input type="password" placeholder="Enter Confirm Password " name="cpassword" style="font-size: 18px;border-radius: 12px; " required />
+                           <input type="submit" style="font-size: 18px;border-radius: 12px; " value="Sign Up" />
+                        </fieldset>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- end why section -->
+      <!-- arrival section -->
+      <section class="arrival_section">
+         <div class="container">
+            <div class="box">
+               <div class="arrival_bg_box">
+                  <img src="{% static 'images/arrival-bg.png' %}" alt="">
+               </div>
+               <div class="row">
+                  <div class="col-md-6 ml-auto">
+                     <div class="heading_container remove_line_bt">
+                        <h2>
+                           #NewArrivals
+                        </h2>
+                     </div>
+                     <p style="margin-top: 20px;margin-bottom: 30px;">
+                        Vitae fugiat laboriosam officia perferendis provident aliquid voluptatibus dolorem, fugit ullam sit earum id eaque nisi hic? Tenetur commodi, nisi rem vel, ea eaque ab ipsa, autem similique ex unde!
+                     </p>
+                     <a href="" style="font-size: 18px;border-radius: 12px;">
+                     Shop Now
+                     </a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- end arrival section -->
+
+      <script type="text/javascript">
+         $('#email').change(function(){
+            var email = $(this).val();
+            // alert(email);
+            $.ajax({
+               url:'/ajax/validate_email/',
+               data: {
+                  'email':email
+               },
+               dataType:'json',
+               success: function(data){
+                  if (data.is_taken){
+                     // document.getElementById("email").style.border="5px solid red";
+                     document.getElementById("email_error").innerHTML = "This Email ID Is Already Registered";
+                  } else{
+                     document.getElementById("email_error").innerHTML="";
+                  }
+               }
+            });
+         });
+      </script>
+
+   </body>
+</html>
+
+{% endblock %}

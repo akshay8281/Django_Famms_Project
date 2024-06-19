@@ -1,0 +1,126 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+   <head>
+     <script src="https://js.stripe.com/v3/"></script>
+   </head>
+   <body class="sub_page">
+  <!--<div class="hero_area">
+
+      </div> -->
+      <!-- inner page section -->
+      <section class="inner_page_head">
+         <div class="container_fuild">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="full">
+                     <h3>Cart Grid</h3>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- end inner page section -->
+      <!-- product section -->
+      <section class="product_section layout_padding">
+         <div class="container">
+            <div class="heading_container heading_center">
+               <h2>
+                  {% if carts %}
+                     My <span>Carts</span>
+                  {% else %}
+                     No Products In <span>Cart</span>
+                  {% endif %}
+               </h2>
+            </div>
+
+            <div class="row" style="justify-content: center;">
+            {% for i in carts %}
+               <div class="col-sm-6 col-md-4 col-lg-4">
+                  <div class="box">
+                     <div class="img-box">
+                        <img src="{{i.product.product_image.url}}" alt="">
+                     </div>
+                     <div class="detail-box">
+                        <h4 style="font-weight: 600; ">
+                           {{i.product.product_category}}'s {{i.product.product_sub_category}}
+                        </h4>
+                        <h4 style="font-weight: 700;color: darkgreen; ">
+                          {{i.product.product_price}}
+                        </h4>
+                     </div>
+
+                   <div class="row justify-content-center align-items-center">
+                      <form name="change_qty" method="post" action="{% url 'change-qty' pk=i.pk %}">
+                          {% csrf_token %}
+                          <div class="row mb-3 mt-3">
+                              <label class="col-sm-2 col-form-label" style="font-size: 18px; font-weight: 700; ">Qty </label>
+                              <div class="col-sm-10">
+                                  <input type="number" class="form-control" id="product_qty" name="product_qty" value="{{i.product_qty}}" min="1" max="10" onchange="this.form.submit()" style="width: 100px; text-align: center; margin-left: 20px;font-size: 20px;font-weight: 600; ">
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+                      <div class="detail-box" style="justify-content: center;font-size: 22px;font-weight: 700;color: darkmagenta; ">
+                       <form name="change_qty" method="post" action="">
+                          Total : {{i.total_price}}
+                       </form>
+                     </div>
+                  </div>
+               </div>
+            {% endfor %}
+            </div>
+         </div>
+      </section>
+      
+      <!-- end product section -->
+      <div class="text-center">
+         <h1 style="font-weight: 700; ">Net Price : <span style="color:darkblue;">{{net_price}}</span> </h1>
+      <form method="post">
+         <input type="hidden" id="net_price" name="amount" value="{{net_price}}">
+         <button type="button" class="btn btn-lg mt-2 mb-5" id="checkout-button" style="font-size: 18px;border-radius: 12px;font-weight: 700;background-color: darkorchid;color: white; ">Checkout</button>
+     </form>
+      </div>
+
+<script type="text/javascript">
+
+var stripe = Stripe('pk_test_51MshH6SJuXwPfjjrrgxJ5tubbOgYAhRrqNcd4RDUSq1peWpIMZrjhIiTncSUWO9u6byeDf4KxdZPkFD4hU55mVOg00aRL5RT8x');
+var checkoutButton = document.getElementById('checkout-button');
+
+checkoutButton.addEventListener('click', function() { 
+ fetch('/create-checkout-session/', {
+ method: 'POST',
+    headers:{
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest', //Necessary to work with request.is_ajax()
+
+    },
+    body: JSON.stringify({'post_data':'{{net_price}}'})
+ })
+ .then(function(response) {
+ return response.json();
+ })
+ .then(function(session) {
+ return stripe.redirectToCheckout({ sessionId: session.id });
+ })
+ .then(function(result) {
+ // If `redirectToCheckout` fails due to a browser or network
+ // error, you should display the localized error message to your
+ // customer using `error.message`.
+ if (result.error) {
+ alert(result.error.message);
+ }
+ })
+ .catch(function(error) {
+ console.error('Error:', error);
+ });
+ });
+ </script>
+
+   </body>
+</html>
+
+{% endblock %}

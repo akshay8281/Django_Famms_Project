@@ -1,0 +1,74 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+   <head>
+     
+   </head>
+   <body class="sub_page">
+  <!--<div class="hero_area">
+
+      </div> -->
+      <!-- inner page section -->
+      <section class="inner_page_head">
+         <div class="container_fuild">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="full">
+                     <h3>Wishlist Grid</h3>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- end inner page section -->
+      <!-- product section -->
+      <section class="product_section layout_padding">
+         <div class="container">
+            <div class="heading_container heading_center">
+               <h2>
+                  {% if wishlists %}
+                     My <span>Wishlist</span>
+                  {% else %}
+                     No Products In <span>Wishlist</span>
+                  {% endif %}
+               </h2>
+            </div>
+            <div class="row" style="justify-content: center;">
+            {% for i in wishlists %}
+
+               <div class="col-sm-6 col-md-5 col-lg-4">
+                  <div class="box">
+                     <div class="option_container">
+                        <div class="options">
+                           <a href="{% url 'product-details' pk=i.product.pk %}" class="option2">
+                           Details
+                           </a>
+                        </div>
+                     </div>
+                     <div class="img-box">
+                        <img src="{{i.product.product_image.url}}" alt="">
+                     </div>
+                     <div class="detail-box">
+                        <h4 style="font-weight: 600; ">
+                           {{i.product.product_category}}'s {{i.product.product_sub_category}}
+                        </h4>
+                        <h4 style="font-weight: 700;color: darkgreen; ">
+                          {{i.product.product_price}}
+                        </h4>
+                     </div>
+                  </div>
+               </div>
+
+            {% endfor %}
+
+            </div>
+         </div>
+      </section>
+      <!-- end product section -->
+   </body>
+</html>
+
+{% endblock %}
